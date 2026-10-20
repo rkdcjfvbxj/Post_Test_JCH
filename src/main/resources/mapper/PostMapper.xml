@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.mapper.PostMapper">
+    <resultMap id="postResultMap" type="com.example.board.dto.Post">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="writer" column="writer"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+    <insert id="insertPost" parameterType="com.example.board.dto.Post"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO posts (title, content, writer, created_at, updated_at)
+        VALUES (#{title}, #{content}, #{writer}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+    <select id="selectPostList" parameterType="com.example.board.dto.Page" resultMap="postResultMap">
+        SELECT id, title, content, writer, created_at, updated_at
+        FROM posts ORDER BY id DESC LIMIT #{size} OFFSET #{offset}
+    </select>
+    <select id="countPosts" resultType="long">
+        SELECT COUNT(*) FROM posts
+    </select>
+    <select id="selectPostById" resultMap="postResultMap">
+        SELECT id, title, content, writer, created_at, updated_at FROM posts WHERE id = #{id}
+    </select>
+    <update id="updatePost" parameterType="com.example.board.dto.Post">
+        UPDATE posts SET title = #{title}, content = #{content}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+    <delete id="deletePost">DELETE FROM posts WHERE id = #{id}</delete>
+</mapper>

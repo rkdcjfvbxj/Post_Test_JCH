@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><main>
+<h1>게시글 수정</h1>
+<form th:action="@{/Post/update}" th:object="${post}" method="post">
+<input type="hidden" th:field="*{id}">
+<p>글번호 <span th:text="*{id}"></span></p>
+<label for="title">제목</label>
+<input type="text" th:field="*{title}" maxlength="200" required>
+<p class="error" th:errors="*{title}"></p>
+<p>작성자 <span th:text="*{writer}"></span></p>
+<label for="content">내용</label>
+<textarea th:field="*{content}" rows="12" maxlength="10000" required></textarea>
+<p class="error" th:errors="*{content}"></p>
+<button type="submit">수정</button>
+</form>
+<form class="delete-form" th:action="@{/Post/delete}" method="post"
+      onsubmit="return confirm('게시글을 삭제하시겠습니까?');">
+    <input type="hidden" name="PostNo" th:value="${post.id}">
+    <button class="danger" type="submit">삭제</button>
+</form>
+<p><a th:href="@{/Post/list}">목록</a></p>
+</main></body>
+</html>
